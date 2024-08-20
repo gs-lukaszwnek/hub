@@ -14,7 +14,7 @@ export default async function Page({
   });
 
   const path = params.educationPathFragments?.join("/") || "";
-  const url = `https://widgets-poc.northpass.com/${path}?${urlSearchParams}`;
+  const url = `${process.env.INSTANCE_URL!}/${path}?${urlSearchParams}`;
 
   const response = await fetch(url, {
     headers: {

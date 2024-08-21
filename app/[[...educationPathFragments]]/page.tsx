@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Header from "../Header";
 import { buildParams } from "../helpers";
 
@@ -20,7 +21,16 @@ export default async function Page({
     headers: {
       Cookie: process.env.COOKIE!,
     },
-  }).then((res) => res.text());
+    redirect: "manual",
+  }).then((res) => {
+    if (res.headers.get("location")) {
+      const redirectUrl = res.headers
+        .get("location")!
+        .replace(process.env.INSTANCE_URL!, "");
+      redirect(redirectUrl);
+    }
+    return res.text();
+  });
 
   return (
     <>

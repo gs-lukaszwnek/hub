@@ -29,6 +29,7 @@ export const getResponse = async ({ searchParams, params }: PageProps) => {
       Cookie: process.env.COOKIE!,
     },
     redirect: "manual",
+    next: { revalidate: 0 },
   }).then((res) => {
     const location = res.headers.get("location");
     if (location) {

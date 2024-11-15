@@ -1,17 +1,12 @@
-import Header from "../Header";
 import { getResponse } from "../helpers";
-import type { PageProps } from "../types";
 
-export default async function Page({ params, searchParams }: PageProps) {
-  const response = await getResponse({ params, searchParams });
+export default async function Page() {
+  const response = await getResponse();
 
   return (
-    <>
-      <Header />
-      <div
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: response }}
-      />
-    </>
+    <div
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: response }}
+    />
   );
 }

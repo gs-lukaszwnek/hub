@@ -1,41 +1,11 @@
-import { redirect } from "next/navigation";
-import type { PageProps } from "./types";
-
-const buildParams = (data: object) => {
-  const params = new URLSearchParams();
-
-  Object.entries(data).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      value.forEach((value) => params.append(key, value.toString()));
-    } else {
-      params.append(key, value.toString());
-    }
-  });
-
-  return params.toString();
-};
-
-export const getResponse = async ({ searchParams, params }: PageProps) => {
-  const urlSearchParams = buildParams({
-    ...searchParams,
-    headless: "true",
-  });
-
-  const path = params.educationPathFragments?.join("/") || "";
-  const url = `${process.env.INSTANCE_URL!}/${path}?${urlSearchParams}`;
+export const getResponse = async () => {
+  const url =
+    "http://learner.lvh.me:3000/learning/api/v1/widgets/public_courses";
 
   return fetch(url, {
     headers: {
-      Cookie: process.env.COOKIE!,
+      "x-ce-school-id": "37696343-1e0c-4834-96de-0013b95789c2",
     },
-    redirect: "manual",
     next: { revalidate: 0 },
-  }).then((res) => {
-    const location = res.headers.get("location");
-    if (location) {
-      const redirectUrl = location.replace(process.env.INSTANCE_URL!, "");
-      redirect(redirectUrl);
-    }
-    return res.text();
-  });
+  }).then((res) => res.text());
 };
